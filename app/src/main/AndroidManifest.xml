@@ -5,7 +5,6 @@
     <!-- HearIT is built on top of Patchfield project which requires this permission. -->
     <uses-permission android:name="com.noisepages.nettoyeur.patchfield.service.USE_PATCHFIELD" />
 
-    <!--  -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -14,7 +13,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <!-- excludeFromRecents is set to true in order to not display HearIT plugins in overview screen. -->
         <activity
             android:name=".PluginMainActivity"
             android:label="@string/app_name"
@@ -23,9 +21,6 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <!-- <category android:name="android.intent.category.LAUNCHER" /> is not included in order to make that
-                     plugin does not appear in applications list. -->
             </intent-filter>
         </activity>
 
@@ -49,12 +44,8 @@
 
         <receiver android:name=".PluginBroadcastReceiver">
 
-            <!-- Definition of filters to handle messages from HearIT platform. -->
             <intent-filter>
-                <!-- This action is used to listen requests to load plugins. -->
                 <action android:name="info.hearit.action.LOAD_PLUGIN"/>
-
-                <!-- This action is used to listen requests to stop plugins. -->
                 <action android:name="info.hearit.action.STOP_PLUGIN"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
