@@ -2,7 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.2"
+    buildToolsVersion "21.1.1"
+
+    // this is needed in order to use Android.mk and Application.mk make files instead of ndk block in gradle build
+    // file.
+    sourceSets.main.jni.srcDirs = []
 
     defaultConfig {
         applicationId "info.hearit.pluginsample"
@@ -11,10 +15,20 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        deubg {
+            minifyEnabled false
         }
     }
 }
@@ -22,4 +36,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.0'
+    compile "info.hearit:pluginslib:1.0-SNAPSHOT@aar" // HearIT plugins lib that is be used to build plugin
+    compile "com.noisepages.nettoyeur:patchfield:1.0@aar" // This project depends on Patchfield (more information in README)
+    compile "com.google.guava:guava:18.0"
+    compile "com.google.code.gson:gson:2.2.4"
 }

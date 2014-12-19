@@ -4,36 +4,51 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
+/**
+ * Plugin main activity.
+ * */
+public class PluginMainActivity extends ActionBarActivity implements SeekBar.OnSeekBarChangeListener{
 
-public class PluginMainActivity extends ActionBarActivity {
+    /** Seek bar to control the gain factor. */
+    private SeekBar mSeekBar;
+
+    private int mCurrentGain;
+
+    /** Reference to audio module implementation. */
+    private PluginAudioModule mModule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plugin_main);
+
+        // we get a reference to seek bar and then register the callback to be notified about changes in progress.
+        this.mSeekBar = (SeekBar) findViewById(R.id.seekbar_factor);
+        this.mSeekBar.setOnSeekBarChangeListener(this);
     }
 
+    // <editor-fold desc="SeekBar.OnSeekBarChangeListener implementation">
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_plugin_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if(this.mModule != null){
+            // update the value of gain factor in module
+            this.mModule.setGainFactor(progress);
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        // do nothing
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        // do nothing
+    }
+
+    // </editor-fold>
 }

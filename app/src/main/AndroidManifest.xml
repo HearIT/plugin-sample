@@ -2,20 +2,64 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.hearit.pluginsample" >
 
+    <!-- HearIT is built on top of Patchfield project which requires this permission. -->
+    <uses-permission android:name="com.noisepages.nettoyeur.patchfield.service.USE_PATCHFIELD" />
+
+    <!--  -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <!-- excludeFromRecents is set to true in order to not display HearIT plugins in overview screen. -->
         <activity
             android:name=".PluginMainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> is not included in order to make that
+                     plugin does not appear in applications list. -->
             </intent-filter>
         </activity>
+
+        <service android:name=".PluginService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.noisepages.nettoyeur.patchfield.service.PatchfieldService"
+            android:permission="com.noisepages.nettoyeur.patchfield.service.USE_PATCHFIELD"
+            android:exported="true"
+            android:process=":remote"
+            >
+            <intent-filter>
+                <action android:name="IPatchfieldService" >
+                </action>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".PluginBroadcastReceiver">
+
+            <!-- Definition of filters to handle messages from HearIT platform. -->
+            <intent-filter>
+                <!-- This action is used to listen requests to load plugins. -->
+                <action android:name="info.hearit.action.LOAD_PLUGIN"/>
+
+                <!-- This action is used to listen requests to stop plugins. -->
+                <action android:name="info.hearit.action.STOP_PLUGIN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
