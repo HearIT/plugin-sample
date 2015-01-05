@@ -1,3 +1,7 @@
+HearIT plugin sample
+====================
+This sample exemplifies how to create a plugin for HearIT.
+
 HearIT
 ------
 HearIT is an audio infrastructure based on Patchfield which provides a simple API to implement plugins
