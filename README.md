@@ -19,11 +19,12 @@ Each plugin is an APK built in such way, that can be automatically found and lau
 # Build instructions
 
 ## Pre-requisites
-  a. Maven installed and configured (`mvn` must be accessible from)
-  b. Java 7
+  a. Maven must be installed and configured
+  b. Java 7 must be installed
   c. Android Studio 1.0 or newer
 
 ## Build project
+
 The first time you build this sample, you need to install the dependencies in your local maven
 repository. In order to install them go to project root directory and run:
 
@@ -33,7 +34,7 @@ Once the dependencies are installed you don't have to execute this task again.
 
 The next step is build the native code.
 
->'./gradlew ndkBuild'
+>`./gradlew ndkBuild`
 
 At this point you can build and install the application.
 
