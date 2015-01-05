@@ -31,10 +31,65 @@ android {
             minifyEnabled false
         }
     }
+
+    /**
+     * Install dependencies in local maven repository. This task only have to be executed if those
+     * dependencies haven't been installed yet in local repository.
+     * */
+    task installDependencies{
+        def patchfieldDependency = new Tuple(
+                'com.noisepages.nettoyeur',  // group ID
+                'patchfield',                // artifact ID
+                '1.0@aar',                   // version
+                'libs/patchfield-1.0.aar'    // file
+        );
+
+        def pluginsLibDependency = new Tuple(
+                'info.hearit',
+                'pluginslib',
+                '1.0-SNAPSHOT@aar',
+                'libs/pluginslib-1.0-SNAPSHOT.aar'
+        );
+
+        def packaging = 'aar'
+
+        [patchfieldDependency, pluginsLibDependency].each {dependency ->
+            task("install${dependency.get(1)}", type: Exec, description: "Install ${dependency.get(1)}"){
+                executable 'mvn'
+                args 'install:install-file', "-Dfile=${dependency.get(3)}", "-DgroupId=${dependency.get(0)}",
+                        "-DartifactId=${dependency.get(1)}", "-Dversion=${dependency.get(2)}",
+                        "-Dpackaging=$packaging"
+            }
+
+            installDependencies.dependsOn("install${dependency.get(1)}")
+        }
+    }
+
+    /**
+     * Generate the native header for a specific Java class.
+     * */
+    task generateNativeHeaders(type: Exec){
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def androidSdk = properties.getProperty('sdk.dir')
+        def nativeHeadersFolder = 'src/main/jni'
+        def javaInterface = 'info.hearit.pluginsample.PluginAudioModule'
+
+        executable 'javah'
+        args '-d', nativeHeadersFolder, '-classpath', "$androidSdk/platforms/android-21/android.jar:" +
+                "build/intermediates/classes/debug", javaInterface
+    }
+
+    /**
+     * Build native code.
+     * */
+    task ndkBuild(type: Exec){
+        executable 'ndk-build'
+        args '-C', 'src/main/jni'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile "info.hearit:pluginslib:1.0-SNAPSHOT@aar" // HearIT plugins lib that is be used to build plugin
     compile "com.noisepages.nettoyeur:patchfield:1.0@aar" // This project depends on Patchfield (more information in README)

@@ -1,6 +1,18 @@
+# ignore gradle files 
 .gradle
+gradlew*
+
 /local.properties
+
+#ignore idea folders
 /.idea/workspace.xml
 /.idea/libraries
+
+# ignore mac os x files
 .DS_Store
+
+# ignore build files
 /build
+
+# ignore temporary files
+*~
