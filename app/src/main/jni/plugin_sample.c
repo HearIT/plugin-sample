@@ -46,12 +46,14 @@ JNIEXPORT jlong JNICALL Java_info_hearit_pluginsample_PluginAudioModule_configur
       gain_data *data = malloc(sizeof(gain_data));
 
       if(data){
-          // registers the process function process_func.
+          // register the processing function process_func.
           am_configure((void *) handle, process_func, data);
       } else {
           free(data);
           data = NULL;
       }
+
+      return (jlong) data;
   }
 
 JNIEXPORT void JNICALL Java_info_hearit_pluginsample_PluginAudioModule_release
