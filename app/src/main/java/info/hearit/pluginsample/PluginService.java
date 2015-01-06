@@ -13,7 +13,7 @@ public class PluginService extends BaseModuleService {
 
     @Override
     protected BaseModule newModule(Notification notification) {
-        return new PluginAudioModule(notification, 1, 2);
+        return new PluginAudioModule(notification, 2, 2);
     }
 
     @Override
