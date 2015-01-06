@@ -9,7 +9,8 @@ typedef struct{
 } gain_data;
 
 /**
- * Processing function.
+ * Processing audio stream function. Receives the audio data through input_buffer, multiply it by a given factor and
+ * put result in output_buffer.
  *
  * @param sample_rate
  * @param buffer_frames
@@ -56,18 +57,27 @@ JNIEXPORT jlong JNICALL Java_info_hearit_pluginsample_PluginAudioModule_configur
       return (jlong) data;
   }
 
+/**
+ * Release resources used to keep the gain factor.
+ */
 JNIEXPORT void JNICALL Java_info_hearit_pluginsample_PluginAudioModule_release
   (JNIEnv *env, jobject obj, jlong handle){
       gain_data *data = (gain_data *) handle;
       free(data);
   }
 
+/**
+ * Set the gain factor to be applied to audio stream. Factor is expected to be an integer between 0 and 100.
+ */
 JNIEXPORT void JNICALL Java_info_hearit_pluginsample_PluginAudioModule_setGainFactor
   (JNIEnv *env, jobject obj, jlong handle, jint factor){
       gain_data *data = (gain_data *) handle;
       __sync_bool_compare_and_swap(&data->factor, data->factor, factor);
   }
 
+/**
+ * Get the current gain factor.
+ */
 JNIEXPORT jint JNICALL Java_info_hearit_pluginsample_PluginAudioModule_getGainFactor
   (JNIEnv *env, jobject obj, jlong handle){
 
