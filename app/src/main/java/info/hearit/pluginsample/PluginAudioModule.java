@@ -5,15 +5,25 @@ import android.app.Notification;
 import info.hearit.pluginslib.BaseModule;
 import info.hearit.pluginslib.profile.SettingSet;
 
+/**
+ *
+ * */
 public class PluginAudioModule extends BaseModule {
 
     /**
-     * Load native library.
+     * Load native library where audio processing algorithm is implemented.
      * */
     static {
         System.loadLibrary("plugin_sample");
     }
 
+    /**
+     * @param notification
+     * @param inputChannels
+     *      Number of input channels used by this plugin.
+     * @param outputChannels
+     *      Number of output channels used by this plugin.
+     * */
     protected PluginAudioModule(Notification notification, int inputChannels, int outputChannels) {
         super(notification, inputChannels, outputChannels);
     }
@@ -25,12 +35,7 @@ public class PluginAudioModule extends BaseModule {
             throw new IllegalArgumentException("Module has already been configured");
         }
 
-        this.mPtr = configureNativeComponents(handle, 2);
-
-        if(this.mPtr != 0){
-            setGainFactor(this.mPtr, 1);
-        }
-
+        this.mPtr = configureNativeComponents(handle, this.mInputChannels);
         return this.mPtr != 0;
     }
 
@@ -39,8 +44,6 @@ public class PluginAudioModule extends BaseModule {
         if(settingSet == null){
             return;
         }
-
-        // TODO parse JSON
     }
 
     @Override
