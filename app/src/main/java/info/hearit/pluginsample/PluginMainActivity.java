@@ -11,18 +11,24 @@ import android.widget.SeekBar;
 import info.hearit.pluginslib.BaseModuleService;
 
 /**
- * Plugin main activity.
+ * Plugin main activity. Plugins, in addition to audio processing module, can provide also, one or more activities
+ * to allow users to manage plugin behaviour. Plugins main activity must be supplied to HearIT through
+ * {@link info.hearit.pluginslib.BaseModuleService#getActivityClass()} method implementation.
+ *
+ * @see info.hearit.pluginsample.PluginService
  * */
 public class PluginMainActivity extends ActionBarActivity implements SeekBar.OnSeekBarChangeListener{
 
     /** Seek bar to control the gain factor. */
     private SeekBar mSeekBar;
 
+    /** Keeps the gain that is applied to audio stream. */
     private int mCurrentGain;
 
     /** Reference to audio module implementation. */
     private PluginAudioModule mModule;
 
+    /** In order to retrieve the plugin audio module, we need to connect to plugin service, where it is running. */
     private ServiceConnection mConnection = new ServiceConnection(){
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
