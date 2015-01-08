@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: 'com.android.application'
 
 android {
@@ -74,9 +76,12 @@ android {
         def androidSdk = properties.getProperty('sdk.dir')
         def nativeHeadersFolder = 'src/main/jni'
         def javaInterface = 'info.hearit.pluginsample.PluginAudioModule'
+        def pathSeparator = Os.isFamily(Os.FAMILY_WINDOWS) ? ';' : ':'
 
         executable 'javah'
-        args '-d', nativeHeadersFolder, '-classpath', "$androidSdk/platforms/android-21/android.jar:" +
+        args '-d', nativeHeadersFolder, '-classpath', "$androidSdk/platforms/android-21/android.jar$pathSeparator" +
+                "build/intermediates/exploded-aar/info.hearit/pluginslib/1.0-SNAPSHOT/classes.jar$pathSeparator" +
+                "build/intermediates/exploded-aar/com.noisepages.nettoyeur/patchfield/1.0/classes.jar$pathSeparator" +
                 "build/intermediates/classes/debug", javaInterface
     }
 
@@ -84,7 +89,10 @@ android {
      * Build native code.
      * */
     task ndkBuild(type: Exec){
-        executable 'ndk-build'
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def androidNdk = properties.getProperty('ndk.dir')
+        executable "$androidNdk/ndk-build"
         args '-C', 'src/main/jni'
     }
 }
