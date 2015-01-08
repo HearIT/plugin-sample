@@ -92,7 +92,8 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def androidNdk = properties.getProperty('ndk.dir')
-        executable "$androidNdk/ndk-build"
+        def ndkBuildScript =  Os.isFamily(Os.FAMILY_WINDOWS) ? 'ndk-build.cmd' : 'ndk-build'
+        executable "$androidNdk/$ndkBuildScript"
         args '-C', 'src/main/jni'
     }
 }
