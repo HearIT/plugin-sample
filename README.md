@@ -18,14 +18,13 @@ Each plugin is an APK built in such way, that can be automatically found and lau
 # Build instructions
 
 ## Pre-requisites
-  a. Maven must be installed and configured
-  b. Java 7 must be installed
-  c. Android Studio 1.0 or newer
-  d. Android SDK version 21
-  e. Android NDK (it is recommended revision 9d or newer)
+* Maven must be installed and configured
+* Java 7 must be installed
+* Android Studio 1.0 or newer
+* Android SDK version 21
+* Android NDK (it is recommended revision 9d or newer)
 
 ## Build project
-
 *Note: the following set of instructions are targeted to Unix based systems. To execute them in Windows, use `gradlew`
 instead of `./gradlew`*
 
