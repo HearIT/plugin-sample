@@ -11,12 +11,6 @@ way, plugin developers can focus on audio processing implementation. Plugins are
 only have one source plugin (the plugin connected to its input channels) and one sink plugin (the plugin connected to
 its output channels).
 
-Profiles
---------
-Profiles are a simple way to organize and manage plugins. Each profile contains at least one plugin
-and it is identified by its name. When a profile is selected, HearIT will check if the required
-plugins are installed in device and only allow their activation if all required plugins were installed.
-
 Getting started
 ---------------
 Each plugin is an APK built in such way, that can be automatically found and launched by HearIT.
@@ -27,8 +21,20 @@ Each plugin is an APK built in such way, that can be automatically found and lau
   a. Maven must be installed and configured
   b. Java 7 must be installed
   c. Android Studio 1.0 or newer
+  d. Android SDK version 21
+  e. Android NDK (it is recommended revision 9d or newer)
 
 ## Build project
+
+*Note: the following set of instructions are targeted to Unix based systems. To execute them in Windows, use `gradlew`
+instead of `./gradlew`*
+
+This project can be built with gradle build system (in this example is used the gradle wrapper provided by Android
+Studio, so you don't need to have the gradle installed). A few tasks are defined in `app/build.gradle` in order to ease
+the building process and make it platform and machine independent. To use those tasks, `sdk.dir` (which must be generated
+automatically when project is opened) and `ndk.dir` (the directory where Android NDK is installed) must be defined in
+`local.properties`.
+
 The first time you build this sample, you need to install the dependencies in your local maven
 repository. In order to install them go to project root directory and run:
 
@@ -40,7 +46,19 @@ The next step is build the native code.
 
 >`./gradlew ndkBuild`
 
-At this point you can build and install the application.
+This task has to be executed whenever a change is made in native code.
+
+At this point you can build and install the application in your device.
+
+It is also possible change the interface between Java and native code, by editing, adding or removing the methods marked
+with `native` keyword in PluginAudioModule, building the project and run:
+
+>`./gradlew generateNativeHeaders`
+
+This task will create .h file in `app/src/main/jni` directory containing a set of functions signatures (Each one of them
+corresponds to a native method defined in PluginAudioModule), that must be implemented in `plugin_sample.c`. (*You must
+take into account that this generated signatures only have arguments types. You must add the argument names in functions
+implementation.*).
 
 Plugin architecture
 -------------------
