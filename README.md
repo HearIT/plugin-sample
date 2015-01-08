@@ -2,8 +2,7 @@ HearIT plugin sample
 ====================
 This sample exemplifies how to create a plugin for HearIT.
 
-HearIT
-------
+# HearIT
 HearIT is an audio infrastructure based on [Patchfield](https://github.com/google/patchfield) which provides a simple
 API to implement plugins for real-time and low-latency audio processing. **Low latency is only possible in devices that
 support that feature.** Plugins are unaware of each other, being all communication between them managed by HearIT. That
@@ -11,20 +10,19 @@ way, plugin developers can focus on audio processing implementation. Plugins are
 only have one source plugin (the plugin connected to its input channels) and one sink plugin (the plugin connected to
 its output channels).
 
-Getting started
----------------
+# Getting started
 Each plugin is an APK built in such way, that can be automatically found and launched by HearIT.
 
-# Build instructions
+## Build instructions
 
-## Pre-requisites
+### Pre-requisites
 * Maven must be installed and configured
 * Java 7 must be installed
 * Android Studio 1.0 or newer
 * Android SDK version 21
 * Android NDK (it is recommended revision 9d or newer)
 
-## Build project
+### Build project
 *Note: the following set of instructions are targeted to Unix based systems. To execute them in Windows, use `gradlew`
 instead of `./gradlew`*
 
@@ -59,8 +57,7 @@ corresponds to a native method defined in PluginAudioModule), that must be imple
 take into account that this generated signatures only have arguments types. You must add the argument names in functions
 implementation.*).
 
-Plugin architecture
--------------------
+# Plugin architecture
 Plugins are composed by three components:
 
 * **Plugin Broadcast Receiver:** in order to be found by HearIT, plugins need to provide a Broadcast Receiver, that must
@@ -75,8 +72,7 @@ for each one of this three components. That way, tasks related with plugin lifec
 implemented in library, and developers can focus on audio processing. Plugins developers must extend that three classes,
 as exemplified in this sample, and implement that audio processing function in native code.
 
-Android Manifest
-----------------
+# Android Manifest
 The following list enumerates some of the tags present in AndroidManifest.xml and a brief description to justify their
 presence in manifest.
 
