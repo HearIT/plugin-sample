@@ -35,39 +35,6 @@ android {
     }
 
     /**
-     * Install dependencies in local maven repository. This task only have to be executed if those
-     * dependencies haven't been installed yet in local repository.
-     * */
-    task installDependencies{
-        def patchfieldDependency = new Tuple(
-                'com.noisepages.nettoyeur',  // group ID
-                'patchfield',                // artifact ID
-                '1.0@aar',                   // version
-                'libs/patchfield-1.0.aar'    // file
-        );
-
-        def pluginsLibDependency = new Tuple(
-                'info.hearit',
-                'pluginslib',
-                '1.0-SNAPSHOT@aar',
-                'libs/pluginslib-1.0-SNAPSHOT.aar'
-        );
-
-        def packaging = 'aar'
-
-        [patchfieldDependency, pluginsLibDependency].each {dependency ->
-            task("install${dependency.get(1)}", type: Exec, description: "Install ${dependency.get(1)}"){
-                executable 'mvn'
-                args 'install:install-file', "-Dfile=${dependency.get(3)}", "-DgroupId=${dependency.get(0)}",
-                        "-DartifactId=${dependency.get(1)}", "-Dversion=${dependency.get(2)}",
-                        "-Dpackaging=$packaging"
-            }
-
-            installDependencies.dependsOn("install${dependency.get(1)}")
-        }
-    }
-
-    /**
      * Generate the native header for a specific Java class.
      * */
     task generateNativeHeaders(type: Exec){

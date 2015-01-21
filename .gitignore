@@ -1,6 +1,5 @@
 # ignore gradle files 
 .gradle
-gradlew*
 
 /local.properties
 
