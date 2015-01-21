@@ -35,7 +35,7 @@ automatically when project is opened) and `ndk.dir` (the directory where Android
 The first time you build this sample, you need to install the dependencies in your local maven
 repository. In order to install them go to project root directory and run:
 
->`./gradlew installDependencies`
+>`./gradlew -b app/init.gradle installDependencies`
 
 Once the dependencies are installed you don't have to execute this task again.
 
